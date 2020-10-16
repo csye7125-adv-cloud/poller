@@ -15,6 +15,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.neu.poller.model.Watch;
+import com.neu.poller.model.WatchTopicModel;
 
 @EnableKafka
 @Configuration
@@ -24,7 +25,7 @@ public class KafkaConsumerConfig {
 	  @Value("${spring.kafka.bootstrap-servers}")
 	  private String groupId;
 	 @Bean
-	    public ConsumerFactory<String, Watch> consumerFactory() {
+	    public ConsumerFactory<String, WatchTopicModel> consumerFactory() {
 	        Map<String, Object> props = new HashMap();
 	        props.put(
 	          ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, 
@@ -38,18 +39,19 @@ public class KafkaConsumerConfig {
 	        props.put(
 	          ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, 
 	          JsonDeserializer.class);
+	        
 		    return new DefaultKafkaConsumerFactory(
 				      props,
 				      new StringDeserializer(), 
-				      new JsonDeserializer(Watch.class));
+				      new JsonDeserializer(WatchTopicModel.class,false));
 	        
 	    }
 	 
 	    @Bean
-	    public ConcurrentKafkaListenerContainerFactory<String, Watch> 
+	    public ConcurrentKafkaListenerContainerFactory<String, WatchTopicModel> 
 	      kafkaListenerContainerFactory() {
 	   
-		    ConcurrentKafkaListenerContainerFactory<String, Watch> factory =
+		    ConcurrentKafkaListenerContainerFactory<String, WatchTopicModel> factory =
 				      new ConcurrentKafkaListenerContainerFactory();
 				    factory.setConsumerFactory(consumerFactory());
 				    return factory;
