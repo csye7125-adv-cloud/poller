@@ -1,5 +1,5 @@
 # Start with a base image containing Java runtime
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11.0.4-jre-slim
 # Add a volume pointing to /tmp
 VOLUME /tmp
 # The application's jar file
