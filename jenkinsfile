@@ -1,0 +1,32 @@
+node{
+	def commit_id
+
+	stage('Git Clone') {
+		checkout scm	
+	}
+
+    stage('Build package') {
+   
+            sh ''' mvn clean
+		   mvn package 
+		'''
+    }
+
+    stage('Build docker image') {
+		commit_id = sh(returnStdout: true, script: 'git rev-parse HEAD')
+		commit_id = sh(returnStdout: true, script: """echo $commit_id . """).trim()
+      
+		sh """
+			env && docker build -t ${POLLER_IMAGE_NAME}:${commit_id} .
+			"""
+      
+    }
+    
+    stage('Push image') {
+            sh """
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+            docker push ${POLLER_IMAGE_NAME}:${commit_id}
+            """
+    }
+		
+}
