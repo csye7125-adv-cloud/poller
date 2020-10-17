@@ -32,22 +32,22 @@ public class WeatherServiceImpl implements WeatherService {
 		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 		// Thread.currentThread().interrupt();
 		Runnable task = () -> {
-			triggerWeatherApi();
+			triggerWeatherApi("");
              
 		};
 
-		executor.scheduleWithFixedDelay(task, 0, 20, TimeUnit.SECONDS);
+		executor.scheduleWithFixedDelay(task, 0, 5, TimeUnit.MINUTES);
 	}
 
 	@Override
-	public void triggerWeatherApi() {
+	public void triggerWeatherApi(String action) {
 		// TODO Auto-generated method stub
 		List<Watch> watches = watchService.getWatches();
 
 		for (Watch watch : watches) {
 
 			try {
-				map.init(watch);
+				map.init(watch,action);
 			   
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
