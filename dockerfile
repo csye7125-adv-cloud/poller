@@ -7,4 +7,4 @@ ARG JAR_FILE=target/poller-0.0.1-SNAPSHOT.jar
 # Add the application's jar to the container
 ADD ${JAR_FILE} poller.jar
 # Run the jar file
-ENTRYPOINT java -jar poller.jar
+ENTRYPOINT java -Dserver.port=8888 -jar poller.jar
