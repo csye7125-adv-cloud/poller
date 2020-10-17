@@ -12,19 +12,19 @@ import org.springframework.kafka.core.KafkaAdmin;
 
 @Configuration
 public class KafkaTopicConfig {
-	@Value("${spring.kafka.bootstrap-servers}")
-	    private String bootstrapAddress;
-	 
-	    @Bean
-	    public KafkaAdmin kafkaAdmin() {
-	        Map<String, Object> configs = new HashMap<String, Object>();
-	        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-	        return new KafkaAdmin(configs);
-	    }
-	    
-	    @Bean
-	    public NewTopic topic1() {
-	    	System.out.println("topic");
-	         return new NewTopic("watch", 1, (short) 1);
-	    }
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapAddress;
+
+    @Bean
+    public KafkaAdmin kafkaAdmin() {
+        Map<String, Object> configs = new HashMap<String, Object>();
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        return new KafkaAdmin(configs);
+    }
+
+    @Bean
+    public NewTopic topic1() {
+       
+        return new NewTopic("weather", 1, (short) 1);
+    }
 }

@@ -1,5 +1,7 @@
 package com.neu.poller.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,8 +14,8 @@ public class Alert {
 	
 	@Id
    String alert_id;
-   String alert_created;
-   String alert_updated;
+   Date alert_created;
+   Date alert_updated;
    @Enumerated(EnumType.STRING)
    FieldType field_type;
    @Enumerated(EnumType.STRING)
@@ -25,16 +27,17 @@ public String getAlert_id() {
 public void setAlert_id(String alert_id) {
 	this.alert_id = alert_id;
 }
-public String getAlert_created() {
+
+public Date getAlert_created() {
 	return alert_created;
 }
-public void setAlert_created(String alert_created) {
+public void setAlert_created(Date alert_created) {
 	this.alert_created = alert_created;
 }
-public String getAlert_updated() {
+public Date getAlert_updated() {
 	return alert_updated;
 }
-public void setAlert_updated(String alert_updated) {
+public void setAlert_updated(Date alert_updated) {
 	this.alert_updated = alert_updated;
 }
 public FieldType getField_type() {

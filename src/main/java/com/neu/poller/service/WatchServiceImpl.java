@@ -27,8 +27,8 @@ public class WatchServiceImpl implements WatchService {
 	}
 
 	@Override
-	public void DeleteWatch(Watch watch) {
-		watchdao.delete(watch);
+	public void DeleteWatch(String id) {
+		watchdao.deleteById(id);
 		
 	}
     

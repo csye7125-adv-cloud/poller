@@ -7,7 +7,7 @@ import com.neu.poller.model.Watch;
 public interface WatchService {
 	void AddWatch(Watch watch);
 	Watch UpdateWatch(Watch watch);
-	void DeleteWatch(Watch watch);
+	void DeleteWatch(String id);
 	List<Watch> getWatches();
 
 }

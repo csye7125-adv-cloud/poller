@@ -13,6 +13,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,8 +27,12 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.neu.poller.Producer;
 import com.neu.poller.WeatherProducer;
+import com.neu.poller.model.Alert;
+import com.neu.poller.model.AlertTopicModel;
 import com.neu.poller.model.Watch;
+import com.neu.poller.model.WatchTopicModel;
 import com.neu.poller.model.Weather;
 
 import org.json.JSONException;
@@ -35,8 +41,10 @@ import org.json.JSONArray;
 
 @Component
 public class OpenWeatherMap {
-//	@Autowired
-//	WeatherProducer weatherProducer;
+	@Autowired
+WeatherProducer weatherProducer;
+	@Autowired
+Producer producer;
 	private static String apiBase = "http://api.openweathermap.org/data/2.5/weather?";
 	public static JSONObject fetch(String zipcode,String apiKey) throws IOException, InterruptedException {
 	    String apiUrl = apiBase + "zip="+zipcode + "&appid=" + apiKey + "&mode=json&units=metric";
@@ -50,7 +58,7 @@ public class OpenWeatherMap {
 		      .build();
 	HttpResponse<String> response =
 		      client.send(request,BodyHandlers.ofString());
-	 JSONObject obj = new JSONObject(response.body());
+ JSONObject obj = new JSONObject(response.body());
 	    return obj;
 	}
 	 
@@ -62,9 +70,27 @@ public class OpenWeatherMap {
 					
 					Weather weather=new Weather();
 					weather.setCurrent_weather(obj);
-					weather.setWatch(watch);
-					
-		//			weatherProducer.sendMessage(weather);
+					WatchTopicModel topicModel=new WatchTopicModel();
+					topicModel.setWatch_id(watch.getWatch_id());
+					topicModel.setZipcode(watch.getZipcode());
+					topicModel.setUser_id(watch.getUser_id());
+					List<AlertTopicModel> alerts=new ArrayList<AlertTopicModel>();
+					for(Alert alert:watch.getAlerts()) {
+						AlertTopicModel alerttopic=new AlertTopicModel();
+						alerttopic.setAlert_id(alert.getAlert_id());
+						alerttopic.setField_type(alert.getField_type());
+						alerttopic.setOperator(alert.getOperator());
+						alerttopic.setValue(alert.getValue());
+						alerttopic.setAlert_updated(alert.getAlert_updated());
+						alerttopic.setAlert_created(alert.getAlert_created());
+						alerts.add(alerttopic);
+					}
+					topicModel.setAlerts(alerts);
+					weather.setWatch(topicModel);
+//					weather.setWatch(null);
+				//weather.setCurrent_weather(obj);
+					producer.sendMessage(weather);
+					//weatherProducer.sendMessage(weather);
 				} catch (IOException | InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

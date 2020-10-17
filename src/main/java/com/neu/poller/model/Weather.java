@@ -3,7 +3,7 @@ package com.neu.poller.model;
 import org.json.JSONObject;
 
 public class Weather {
-	private Watch watch;
+	private WatchTopicModel watch;
 	private JSONObject current_weather;
 
 	public JSONObject getCurrent_weather() {
@@ -12,10 +12,10 @@ public class Weather {
 	public void setCurrent_weather(JSONObject current_weather) {
 		this.current_weather = current_weather;
 	}
-	public Watch getWatch() {
+	public WatchTopicModel getWatch() {
 		return watch;
 	}
-	public void setWatch(Watch watch) {
+	public void setWatch(WatchTopicModel watch) {
 		this.watch = watch;
 	}
 	
