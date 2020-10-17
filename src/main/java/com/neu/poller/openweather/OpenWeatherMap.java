@@ -45,7 +45,7 @@ import org.json.JSONArray;
 
 @Component
 public class OpenWeatherMap {
-	@Value("${open-api-key}")
+	@Value("${open.api.key}")
 	public String openApiKey;
 	@Autowired
 WeatherProducer weatherProducer;
