@@ -11,6 +11,7 @@ import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpClient;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
@@ -43,6 +45,8 @@ import org.json.JSONArray;
 
 @Component
 public class OpenWeatherMap {
+	@Value("${open-api-key}")
+	public String openApiKey;
 	@Autowired
 WeatherProducer weatherProducer;
 	@Autowired
@@ -68,7 +72,9 @@ Producer producer;
 
 		        JSONObject obj = null;
 				try {
-					obj = fetch(watch.getZipcode(), "14578452155f59ef8911325c99afdf48");
+//					obj = fetch(watch.getZipcode(), "14578452155f59ef8911325c99afdf48");
+//					obj = fetch(watch.getZipcode(), "7c3837c39e630c278d83d7956db4258d");
+					obj = fetch(watch.getZipcode(), openApiKey);
 					
 					Weather weather=new Weather();
 					String json=obj.get("main").toString();
