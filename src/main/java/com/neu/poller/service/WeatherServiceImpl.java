@@ -23,6 +23,8 @@ public class WeatherServiceImpl implements WeatherService {
 	WatchService watchService;
 	@Autowired
 	OpenWeatherMap map;
+	
+	
 
 	@Override
 	public void callApiInit() {
@@ -31,7 +33,7 @@ public class WeatherServiceImpl implements WeatherService {
 		// Thread.currentThread().interrupt();
 		Runnable task = () -> {
 			triggerWeatherApi();
-
+             
 		};
 
 		executor.scheduleWithFixedDelay(task, 0, 20, TimeUnit.SECONDS);
@@ -46,6 +48,7 @@ public class WeatherServiceImpl implements WeatherService {
 
 			try {
 				map.init(watch);
+			   
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

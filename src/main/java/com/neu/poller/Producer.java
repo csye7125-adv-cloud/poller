@@ -15,13 +15,14 @@ import com.neu.poller.model.Alert;
 import com.neu.poller.model.FieldType;
 import com.neu.poller.model.Operator;
 import com.neu.poller.model.Watch;
+import com.neu.poller.model.Weather;
 
-//@Component
+@Component
 public class Producer {
-//	@Autowired
-//	private KafkaTemplate<String, Watch> kafkaTemplate;
-//
-//	public void sendMessage(String zipcode) {
+	@Autowired
+	private KafkaTemplate<String, Weather> kafkaTemplate;
+
+	public void sendMessage(Weather weather) {
 //		Watch watch=new Watch();
 //		watch.setWatch_id(UUID.randomUUID().toString());
 //		watch.setUser_id(UUID.randomUUID().toString());
@@ -34,7 +35,11 @@ public class Producer {
 //		List<Alert> alerts=new ArrayList<Alert>();
 //		alerts.add(alert);
 //		watch.setAlerts(alerts);
-//	    ListenableFuture<SendResult<String, Watch>> future = 
-//	      kafkaTemplate.send("watch", watch);
-//	}
+	//	weather.setWatch(null);
+	//weather.setCurrent_weather(nu);
+		
+	    ListenableFuture<SendResult<String, Weather>> future = 
+	      kafkaTemplate.send("weather", weather);
+	    System.out.println("weather posted");
+	}
 }

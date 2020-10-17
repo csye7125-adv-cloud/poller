@@ -18,12 +18,17 @@ import com.neu.poller.model.Weather;
 
 @Component
 public class WeatherProducer {
-	@Autowired
-	private KafkaTemplate<String, Weather> kafkaTemplate;
-
-	public void sendMessage(Weather weather) {
-
-	    ListenableFuture<SendResult<String, Weather>> future = 
-	      kafkaTemplate.send("weather", weather);
-	}
+//	@Autowired
+//	private KafkaTemplate<String, Weather> kafkaTemplate;
+//
+//	public void sendMessage(Weather weather) {
+//try {
+//	    ListenableFuture<SendResult<String, Weather>> future = 
+//	      kafkaTemplate.send("weather", weather);
+//	    System.out.println("weather event produced");
+//}
+//catch(Exception e) {
+//	System.out.println(e);
+//}
+//	}
 }

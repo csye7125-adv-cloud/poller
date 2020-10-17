@@ -32,6 +32,7 @@ public class WatchConsumer {
 	public void listenWithHeaders(
 	  @Payload WatchTopicModel topicModel, 
 	  @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
+		System.out.println("Watch event received");
 		if(topicModel.getAction().equals("CREATED")||topicModel.getAction().equals("UPDATED")) {
 		Watch watch=new Watch();
 		watch.setWatch_id(topicModel.getWatch_id());
