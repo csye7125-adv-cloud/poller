@@ -51,9 +51,10 @@ public class WatchConsumer {
 		}
 		watch.setAlerts(alerts);
 		watchservice.AddWatch(watch);
-		weatherService.triggerWeatherApi();
+		weatherService.triggerWeatherApi("UPDATED");
 		}
 		if(topicModel.getAction().equals("DELETED")) {
+			weatherService.triggerWeatherApi("DELETED");
 			watchservice.DeleteWatch(topicModel.getWatch_id());
 			
 			}

@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
 import com.neu.poller.Producer;
 import com.neu.poller.WeatherProducer;
 import com.neu.poller.model.Alert;
@@ -34,6 +35,7 @@ import com.neu.poller.model.AlertTopicModel;
 import com.neu.poller.model.Watch;
 import com.neu.poller.model.WatchTopicModel;
 import com.neu.poller.model.Weather;
+import com.neu.poller.model.WeatherModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,15 +64,28 @@ Producer producer;
 	    return obj;
 	}
 	 
-	    public void init(Watch watch) throws IOException, InterruptedException {
+	    public void init(Watch watch,String action) throws IOException, InterruptedException {
 
 		        JSONObject obj = null;
 				try {
 					obj = fetch(watch.getZipcode(), "14578452155f59ef8911325c99afdf48");
 					
 					Weather weather=new Weather();
-					weather.setCurrent_weather(obj);
+					String json=obj.get("main").toString();
+					Gson g = new Gson();
+					WeatherModel p=null;
+					try {
+					p = g.fromJson(json, WeatherModel.class);
+					}
+					catch(Exception e) {
+						System.out.println(e.toString());
+					}
+                    
+				//	weather.setCurrent_weather(obj);
+			//		Object temp=new JSONObject(obj.get("main"));
+				//	weather.setTemp(Integer.valueOf(temp.get("temp").toString()));
 					WatchTopicModel topicModel=new WatchTopicModel();
+					
 					topicModel.setWatch_id(watch.getWatch_id());
 					topicModel.setZipcode(watch.getZipcode());
 					topicModel.setUser_id(watch.getUser_id());
@@ -87,6 +102,9 @@ Producer producer;
 					}
 					topicModel.setAlerts(alerts);
 					weather.setWatch(topicModel);
+					weather.setWeather(p);
+					weather.setAction(action);
+				
 //					weather.setWatch(null);
 				//weather.setCurrent_weather(obj);
 					producer.sendMessage(weather);
