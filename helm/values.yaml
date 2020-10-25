@@ -7,10 +7,10 @@ replicaCount: 3
 image:
   repository: keshavkaanthkumar/poller
   pullPolicy: IfNotPresent
-  tag: 728cb90d42d5d008bcd0155bb96df7a5ccc75f94
+  tag: 957a1e04d9218ff93c8e86b7222b0109705b13b1
 
 
-backend:
+poller:
   name: poller
   group: backend
   progressDeadlineSeconds: 300
@@ -21,7 +21,11 @@ backend:
   host: arpa.k8s.com
   service:
     type: LoadBalancer
-    port: 5000
+    port: 8888
+  container:
+    image: keshavkaanthkumar/webapp:728cb90d42d5d008bcd0155bb96df7a5ccc75f94
+    port: 8888
+    secret: ""
   config:
     name: poller-config
     data:
