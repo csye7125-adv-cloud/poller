@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "poller-service"
+spec:
+  selector:
+    app: {{ .Values.poller.name }}
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: {{ .Values.poller.service.port }}
+      targetPort: {{ .Values.poller.service.port }}
+      name: http

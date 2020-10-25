@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.poller.config.name }}
+  labels:
+    group: {{ .Values.poller.group }}
+data:
+  {{- range .Values.poller.config.data }}
+  {{ .key }}: {{ .value }}
+{{- end}}

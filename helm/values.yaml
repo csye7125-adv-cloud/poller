@@ -1,0 +1,109 @@
+# Default values for webapp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  repository: keshavkaanthkumar/poller
+  pullPolicy: IfNotPresent
+  tag: 957a1e04d9218ff93c8e86b7222b0109705b13b1
+
+
+poller:
+  name: poller
+  group: backend
+  progressDeadlineSeconds: 300
+  minReadySeconds: 30
+  maxUnavailable: 0
+  maxSurge: 1
+  deploymentType: RollingUpdate
+  host: arpa.k8s.com
+  service:
+    type: LoadBalancer
+    port: 8888
+  container:
+    image: keshavkaanthkumar/webapp:728cb90d42d5d008bcd0155bb96df7a5ccc75f94
+    port: 8888
+    secret: ""
+  config:
+    name: poller-config
+    data:
+      - key: kafka
+        value: kafka-service:9092
+      - key: MYSQL_HOST
+        value: csye7125.cqyirifhiqpb.us-east-1.rds.amazonaws.com
+      - key: mysql_username
+        value: root
+      - key: mysql_password
+        value: Keshav007#
+      - key: apiKey
+        value: 2bf9f293b4f4c5c26c415dc9e6b55afc
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+# runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+#   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
