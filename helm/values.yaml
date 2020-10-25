@@ -1,16 +1,42 @@
-# Default values for helm.
+# Default values for webapp.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 3
 
 image:
-  repository: nginx
+  repository: keshavkaanthkumar/poller
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: 728cb90d42d5d008bcd0155bb96df7a5ccc75f94
 
-imagePullSecrets: a2VzaGF2a2FhbnRoa3VtYXI6S2VzaGF2MDA3Iw==
+
+backend:
+  name: poller
+  group: backend
+  progressDeadlineSeconds: 300
+  minReadySeconds: 30
+  maxUnavailable: 0
+  maxSurge: 1
+  deploymentType: RollingUpdate
+  host: arpa.k8s.com
+  service:
+    type: LoadBalancer
+    port: 5000
+  config:
+    name: poller-config
+    data:
+      - key: kafka
+        value: kafka-service:9092
+      - key: MYSQL_HOST
+        value: csye7125.cqyirifhiqpb.us-east-1.rds.amazonaws.com
+      - key: mysql_username
+        value: root
+      - key: mysql_password
+        value: Keshav007#
+      - key: apiKey
+        value: 2bf9f293b4f4c5c26c415dc9e6b55afc
+
+imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
@@ -26,7 +52,7 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext: {}
   # capabilities:
@@ -34,7 +60,7 @@ securityContext: {}
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-  # runAsUser: 1000
+# runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -44,7 +70,7 @@ ingress:
   enabled: false
   annotations: {}
     # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths: []
@@ -63,7 +89,7 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi
 
 autoscaling:
   enabled: false

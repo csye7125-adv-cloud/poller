@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-poller-deployment
+  labels:
+    app: {{ .Values.poller.name }}
+    group: {{ .Values.poller.group }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: {{ .Values.poller.progressDeadlineSeconds }}
+  minReadySeconds: {{ .Values.poller.minReadySeconds }}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ .Values.poller.maxSurge }}
+      maxUnavailable: {{ .Values.poller.maxUnavailable }}
+    type: {{ .Values.poller.deploymentType }}
+  selector:
+    matchLabels:
+      app: {{ .Values.poller.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.poller.name }}
+        group: {{ .Values.poller.group }}
+    spec:
+      containers:
+        - name: {{ .Values.poller.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.poller.container.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.poller.config.name }}
+      imagePullSecrets:
+        - name: myregistrykey
