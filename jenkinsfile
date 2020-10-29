@@ -45,7 +45,7 @@ node{
                       kops export kubecfg ${cluster_name}
                    """
                   sh"""
-                       ./linux-amd64/helm upgrade webapp ./helm --install --wait --set backend.database.user='${mysql_user}' --set backend.database.password='${mysql_password}' --set backend.database.host='${mysql_host_poller}' --set image.repository='${POLLER_IMAGE_NAME}' --set image.tag='${commit_id}' --set backend.container.secret='${docker_secret}'
+                       ./linux-amd64/helm upgrade webapp ./helm --install --wait --set poller.database.user='${mysql_user}' --set poller.database.password='${mysql_password}' --set poller.database.host='${mysql_host_poller}' --set image.repository='${POLLER_IMAGE_NAME}' --set image.tag='${commit_id}' --set poller.container.secret='${docker_secret}'
                   """
                   }
              }
