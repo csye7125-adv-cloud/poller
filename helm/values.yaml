@@ -10,7 +10,7 @@ image:
   tag:
 
 
-backend:
+poller:
   name: poller
   group: backend
   progressDeadlineSeconds: 300
