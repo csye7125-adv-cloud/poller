@@ -5,6 +5,7 @@ metadata:
   labels:
     group: {{ .Values.poller.group }}
 data:
-  {{- range .Values.poller.config.data }}
-  {{ .key }}: {{ .value }}
-{{- end}}
+  mysql_username: {{ .Values.poller.database.user }}
+  mysql_password: {{ .Values.poller.database.password }}
+  MYSQL_HOST: {{ .Values.poller.database.host }}
+  kafka: {{ .Values.poller.kafka.server }}

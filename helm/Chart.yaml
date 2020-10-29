@@ -21,3 +21,12 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 appVersion: 1.16.0
+sources:
+  - https://github.com/csye7125-adv-cloud/poller
+maintainers:
+  - name: Arundathi Patil
+    email: patil.aru@northeastern.edu
+  - name: Harrsini Sekar
+    email: sekar.h@northeastern.edu
+  - name: Keshav Kaanth Kumar
+    email: kumar.ke@northeastern.edu
