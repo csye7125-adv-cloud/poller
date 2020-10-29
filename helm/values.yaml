@@ -1,16 +1,16 @@
-# Default values for webapp.
+# Default values for helm.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 3
 
 image:
-  repository: keshavkaanthkumar/poller
+  repository:
   pullPolicy: IfNotPresent
-  tag: 957a1e04d9218ff93c8e86b7222b0109705b13b1
+  tag:
 
 
-poller:
+backend:
   name: poller
   group: backend
   progressDeadlineSeconds: 300
@@ -23,22 +23,23 @@ poller:
     type: LoadBalancer
     port: 8888
   container:
-    image: keshavkaanthkumar/webapp:728cb90d42d5d008bcd0155bb96df7a5ccc75f94
     port: 8888
     secret: ""
   config:
     name: poller-config
-    data:
-      - key: kafka
-        value: kafka-service:9092
-      - key: MYSQL_HOST
-        value: csye7125.cqyirifhiqpb.us-east-1.rds.amazonaws.com
-      - key: mysql_username
-        value: root
-      - key: mysql_password
-        value: Keshav007#
-      - key: apiKey
-        value: 2bf9f293b4f4c5c26c415dc9e6b55afc
+  probe:
+    readiness:
+      initialDelaySeconds: 15
+      periodSeconds: 40
+    liveness:
+      initialDelaySeconds: 15
+      periodSeconds: 60
+  database:
+    user: ""
+    password: ""
+    host: ""
+  kafka:
+    server: kafka-service:9092
 
 imagePullSecrets: []
 nameOverride: ""
@@ -56,7 +57,7 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
-# fsGroup: 2000
+  # fsGroup: 2000
 
 securityContext: {}
   # capabilities:
@@ -64,7 +65,7 @@ securityContext: {}
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-# runAsUser: 1000
+  # runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -74,7 +75,7 @@ ingress:
   enabled: false
   annotations: {}
     # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/tls-acme: "true"
+    # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths: []
@@ -93,7 +94,7 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-#   memory: 128Mi
+  #   memory: 128Mi
 
 autoscaling:
   enabled: false

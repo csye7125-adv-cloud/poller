@@ -28,5 +28,27 @@ node{
             docker push ${POLLER_IMAGE_NAME}:${commit_id}
             """
     }
+
+    stage('webapp deployment') {
+            script {
+                  sh "pwd"
+                  sh"""
+                      wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz
+                      tar xvf helm-v3.0.2-linux-amd64.tar.gz
+                      chmod +x linux-amd64/helm
+                    """
+                  sh"""
+                      export AWS_ACCESS_KEY_ID=${aws_access_key_id}
+                      export AWS_SECRET_ACCESS_KEY=${aws_secret_key}
+                      export KOPS_STATE_STORE=${state_store}
+                      export AWS_DEFAULT_REGION=${aws_default_region}
+                      kops export kubecfg ${cluster_name}
+                   """
+                  sh"""
+                       ./linux-amd64/helm upgrade webapp ./helm --install --wait --set backend.database.user='${mysql_user}' --set backend.database.password='${mysql_password}' --set backend.database.host='${mysql_host}' --set image.repository='${docker_repo}' --set image.tag='${commit_id}' --set backend.container.secret='${docker_secret}'
+                  """
+                  }
+             }
+    
 		
 }

@@ -26,10 +26,23 @@ spec:
       containers:
         - name: {{ .Values.poller.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /readyStatus
+              port: {{ .Values.poller.container.port }}
+            initialDelaySeconds: {{ .Values.poller.probe.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.poller.probe.readiness.periodSeconds }}
+          livenessProbe:
+            httpGet:
+              path: /healthStatus
+              port: {{ .Values.poller.container.port }}
+            initialDelaySeconds: {{ .Values.poller.probe.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.poller.probe.liveness.periodSeconds }}
           ports:
             - containerPort: {{ .Values.poller.container.port }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.poller.config.name }}
       imagePullSecrets:
-        - name: pollerregistrykey
+        - name: myregistrykey
