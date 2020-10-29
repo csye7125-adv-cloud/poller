@@ -9,3 +9,4 @@ data:
   mysql_password: {{ .Values.poller.database.password }}
   MYSQL_HOST: {{ .Values.poller.database.host }}
   kafka: {{ .Values.poller.kafka.server }}
+  apiKey: {{ .Values.poller.apiKey }}
