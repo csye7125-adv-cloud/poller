@@ -8,6 +8,10 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.neu.poller.controller.HealthController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.PostConstruct;
 
 import org.json.JSONObject;
@@ -23,8 +27,8 @@ public class WeatherServiceImpl implements WeatherService {
 	WatchService watchService;
 	@Autowired
 	OpenWeatherMap map;
-	
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(HealthController.class);
 
 	@Override
 	public void callApiInit() {
@@ -51,6 +55,7 @@ public class WeatherServiceImpl implements WeatherService {
 			   
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
+				logger.error(e.getMessage());
 				e.printStackTrace();
 			}
 		}
