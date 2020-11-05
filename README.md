@@ -2,7 +2,6 @@
 
 ## Team Information
 
-
 | Name | NEU ID | Email Address |
 | --- | --- | --- |
 | Arundathi Patil     | 001066930 | patil.aru@northeastern.edu |
