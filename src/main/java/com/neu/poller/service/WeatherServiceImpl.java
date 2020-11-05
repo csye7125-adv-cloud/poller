@@ -28,7 +28,7 @@ public class WeatherServiceImpl implements WeatherService {
 	@Autowired
 	OpenWeatherMap map;
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthController.class);
+	private static final Logger logger = LoggerFactory.getLogger(WeatherServiceImpl.class);
 
 	@Override
 	public void callApiInit() {
