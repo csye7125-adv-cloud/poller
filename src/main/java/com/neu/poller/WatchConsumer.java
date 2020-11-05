@@ -26,7 +26,7 @@ import com.neu.poller.service.WeatherService;
 @Component
 public class WatchConsumer {
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthController.class);
+	private static final Logger logger = LoggerFactory.getLogger(WatchConsumer.class);
 
 	@Autowired
 	OpenWeatherMap weatherapi;
@@ -65,7 +65,7 @@ public class WatchConsumer {
 		}
 		if(topicModel.getAction().equals("DELETED")) {
 			weatherService.triggerWeatherApi("DELETED");
-			logger.info("Poller App- On weather kafka topic - Message with id " + topicModel.getWatch_id()+ " deleted");
+			logger.info("Poller App- On weather kafka topic - Message with id " + topicModel.getWatch_id()+ " deleted by User with user id " +  topicModel.getUser_id());
 			watchservice.DeleteWatch(topicModel.getWatch_id());
 			
 			}
