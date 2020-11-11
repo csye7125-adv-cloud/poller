@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+
 import com.neu.poller.model.Alert;
 import com.neu.poller.model.FieldType;
 import com.neu.poller.model.Operator;
@@ -21,6 +24,10 @@ import com.neu.poller.model.Weather;
 public class Producer {
 	@Autowired
 	private KafkaTemplate<String, Weather> kafkaTemplate;
+	@Autowired
+    MeterRegistry registry;
+
+    Timer kafkaTimer;
 
 	public void sendMessage(Weather weather) {
 //		Watch watch=new Watch();
@@ -37,9 +44,10 @@ public class Producer {
 //		watch.setAlerts(alerts);
 	//	weather.setWatch(null);
 	//weather.setCurrent_weather(nu);
-		
-	    ListenableFuture<SendResult<String, Weather>> future = 
-	      kafkaTemplate.send("weather", weather);
+	kafkaTimer = registry.timer("custom.metrics.timer", "Poller", "Kafka_Weather_Produce");
+    registry.counter("custom.metrics.counter", "Poller", "Weather_messages_produced").increment();
+	ListenableFuture<SendResult<String, Weather>> future = 
+	      kafkaTimer.record(()->kafkaTemplate.send("weather", weather));
 	    System.out.println("weather posted");
 	}
 }
