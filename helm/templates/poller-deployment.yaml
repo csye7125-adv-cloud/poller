@@ -23,6 +23,7 @@ spec:
         app: {{ .Values.poller.name }}
         group: {{ .Values.poller.group }}
     spec:
+      serviceAccountName: poller
       containers:
         - name: {{ .Values.poller.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
