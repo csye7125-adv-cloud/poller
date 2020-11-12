@@ -31,7 +31,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.neu.poller.Producer;
-import com.neu.poller.WeatherProducer;
 import com.neu.poller.model.Alert;
 import com.neu.poller.model.AlertTopicModel;
 import com.neu.poller.model.Watch;
@@ -47,8 +46,6 @@ import org.json.JSONArray;
 public class OpenWeatherMap {
 	@Value("${open.api.key}")
 	public String openApiKey;
-	@Autowired
-WeatherProducer weatherProducer;
 	@Autowired
 Producer producer;
 	private static String apiBase = "http://api.openweathermap.org/data/2.5/weather?";

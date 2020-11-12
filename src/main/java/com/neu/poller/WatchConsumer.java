@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+
 import com.neu.poller.model.Alert;
 import com.neu.poller.model.AlertTopicModel;
 import com.neu.poller.model.Watch;
@@ -33,6 +36,8 @@ public class WatchConsumer {
 	@Autowired
 	WatchService watchservice;
 	@Autowired
+    MeterRegistry registry;
+	@Autowired
 	WeatherService weatherService;
 	@KafkaListener(topics = "watch")
 	public void listenWithHeaders(
@@ -42,6 +47,7 @@ public class WatchConsumer {
 		System.out.println("Watch event received");
 		logger.info("Poller App - Watch event received");
 		logger.info("****Poller App - Consumed message with id "+ topicModel.getWatch_id() + " from topic watch and Partition ID "+ partition + "*****");
+	    registry.counter("custom.metrics.counter", "Poller", "Watch_messages_consumed").increment();
 		if(topicModel.getAction().equals("CREATED")||topicModel.getAction().equals("UPDATED")) {
 		Watch watch=new Watch();
 		watch.setWatch_id(topicModel.getWatch_id());
