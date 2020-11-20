@@ -11,12 +11,12 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ .Release.Name }}-poller-deployment
-  minReplicas: 1
-  maxReplicas: 5
+  minReplicas: {{ .Values.podAutoscaling.minReplicas }}
+  maxReplicas: {{ .Values.podAutoscaling.maxReplicas }}
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 5
+          averageUtilization: {{ .Values.podAutoscaling.averageUtilization }}
