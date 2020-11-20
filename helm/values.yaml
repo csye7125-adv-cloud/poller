@@ -4,6 +4,11 @@
 
 replicaCount: 3
 
+podAutoscaling:
+  minReplicas: 1
+  maxReplicas: 5
+  averageCPUUtilization: 5
+
 image:
   repository:
   pullPolicy: IfNotPresent
