@@ -45,7 +45,7 @@ node{
                       kops export kubecfg ${cluster_name}
                    """
                   sh"""
-                       ./linux-amd64/helm upgrade poller ./helm --install --wait --set poller.database.user='${mysql_user}' --set poller.database.password='${mysql_password}' --set poller.database.host='${mysql_host_poller}' --set image.repository='${POLLER_IMAGE_NAME}' --set image.tag='${commit_id}' --set poller.container.secret='${docker_secret}' --set poller.apiKey='${apiKey}' --set podAutoscaling.minReplicas='${poller_minReplicas}' --set podAutoscaling.maxReplicas='${poller_maxReplicas}' --set podAutoscaling.averageCPUUtilization='${poller_average_CPU_Utilization}'
+                       ./linux-amd64/helm upgrade poller ./helm --install --wait --set poller.database.user='${mysql_user}' --set poller.database.password='${mysql_password}' --set poller.database.host='${mysql_host_poller}' --set image.repository='${POLLER_IMAGE_NAME}' --set image.tag='${commit_id}' --set poller.container.secret='${docker_secret}' --set poller.apiKey='${apiKey}' --set podAutoscaling.minReplicas='${poller_minReplicas}' --set podAutoscaling.maxReplicas='${poller_maxReplicas}' --set podAutoscaling.averageCPUUtilization='${poller_average_CPU_Utilization}' --set resources.requests.CPU='${poller_cpu_request}' --set resources.limits.CPU='${poller_cpu_limit}'
                   """
                   }
              }

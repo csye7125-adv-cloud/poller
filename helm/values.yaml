@@ -9,6 +9,12 @@ podAutoscaling:
   maxReplicas: 5
   averageCPUUtilization: 5
 
+resources:
+  requests:
+    CPU: 0.3
+  limits:
+    CPU: 0.3
+
 image:
   repository:
   pullPolicy: IfNotPresent

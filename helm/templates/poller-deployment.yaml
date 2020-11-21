@@ -30,6 +30,11 @@ spec:
       serviceAccountName: poller
       containers:
         - name: {{ .Values.poller.name }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.CPU }}
+            limits: 
+              cpu: {{ .Values.resources.limits.CPU }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
           readinessProbe:
