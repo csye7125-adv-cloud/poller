@@ -37,15 +37,24 @@ node{
                       tar xvf helm-v3.0.2-linux-amd64.tar.gz
                       chmod +x linux-amd64/helm
                     """
-                  sh"""
+                 if ( env.cloud == 'aws') {
+		       sh"""
                       export AWS_ACCESS_KEY_ID=${aws_access_key_id}
                       export AWS_SECRET_ACCESS_KEY=${aws_secret_key}
                       export KOPS_STATE_STORE=${state_store}
                       export AWS_DEFAULT_REGION=${aws_default_region}
                       kops export kubecfg ${cluster_name}
                    """
+               
+            } 
+	    if(env.cloud == 'azure'){
+	    sh"""
+	       az login --service-principal --username ${client_id} --password ${client_secret} --tenant ${tenant}
+	       az aks get-credentials --resource-group ${azure_resource_group} --name ${azure_cluster_name} --overwrite-existing
+            """
+	    }
                   sh"""
-                       ./linux-amd64/helm upgrade poller ./helm --install --wait --set poller.database.user='${mysql_user}' --set poller.database.password='${mysql_password}' --set poller.database.host='${mysql_host_poller}' --set image.repository='${POLLER_IMAGE_NAME}' --set image.tag='${commit_id}' --set poller.container.secret='${docker_secret}' --set poller.apiKey='${apiKey}' --set podAutoscaling.minReplicas='${poller_minReplicas}' --set podAutoscaling.maxReplicas='${poller_maxReplicas}' --set podAutoscaling.averageCPUUtilization='${poller_average_CPU_Utilization}' --set resources.requests.CPU='${poller_cpu_request}' --set resources.limits.CPU='${poller_cpu_limit}'
+                       ./linux-amd64/helm upgrade poller ./helm --install --wait --set poller.database.user='${mysql_user_poller}' --set poller.database.password='${mysql_password}' --set poller.database.host='${mysql_host_poller}' --set image.repository='${POLLER_IMAGE_NAME}' --set image.tag='${commit_id}' --set poller.container.secret='${docker_secret}' --set poller.apiKey='${apiKey}' --set podAutoscaling.minReplicas='${poller_minReplicas}' --set podAutoscaling.maxReplicas='${poller_maxReplicas}' --set podAutoscaling.averageCPUUtilization='${poller_average_CPU_Utilization}' --set resources.requests.CPU='${poller_cpu_request}' --set resources.limits.CPU='${poller_cpu_limit}'
                   """
                   }
              }
